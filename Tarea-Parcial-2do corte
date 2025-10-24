@@ -1,0 +1,109 @@
+import random
+import time
+import matplotlib.pyplot as plt
+
+# =============================
+# Algoritmos de ordenamiento
+# =============================
+
+def burbuja(lista):
+    """Ordenamiento burbuja O(n²)"""
+    n = len(lista)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if lista[j] > lista[j + 1]:
+                lista[j], lista[j + 1] = lista[j + 1], lista[j]
+    return lista
+
+
+def merge_sort(lista):
+    """Ordenamiento Merge Sort O(n log n)"""
+    if len(lista) <= 1:
+        return lista
+    medio = len(lista) // 2
+    izquierda = merge_sort(lista[:medio])
+    derecha = merge_sort(lista[medio:])
+    return merge(izquierda, derecha)
+
+
+def merge(izquierda, derecha):
+    resultado = []
+    i = j = 0
+    while i < len(izquierda) and j < len(derecha):
+        if izquierda[i] < derecha[j]:
+            resultado.append(izquierda[i])
+            i += 1
+        else:
+            resultado.append(derecha[j])
+            j += 1
+    resultado.extend(izquierda[i:])
+    resultado.extend(derecha[j:])
+    return resultado
+
+
+# =============================
+# Función de medición
+# =============================
+
+def medir_tiempo(algoritmo, datos, repeticiones=3):
+    """Mide el tiempo promedio de ejecución de un algoritmo sobre los datos."""
+    total = 0
+    for _ in range(repeticiones):
+        copia = datos.copy()
+        inicio = time.perf_counter()
+        algoritmo(copia)
+        fin = time.perf_counter()
+        total += (fin - inicio)
+    return total / repeticiones
+
+
+# =============================
+# Generación de datos y medición
+# =============================
+
+def main():
+    random.seed(42)  # Semilla fija para reproducibilidad
+    tamanos = [100, 1000, 5000, 10000]  # puedes ajustar según tu PC
+    resultados = []
+
+    for n in tamanos:
+        datos = [random.randint(0, 10000) for _ in range(n)]
+
+        tiempo_burbuja = medir_tiempo(burbuja, datos)
+        tiempo_merge = medir_tiempo(merge_sort, datos)
+
+        resultados.append({"tamaño": n, "algoritmo": "Burbuja", "tiempo_promedio_seg": tiempo_burbuja})
+        resultados.append({"tamaño": n, "algoritmo": "Merge Sort", "tiempo_promedio_seg": tiempo_merge})
+
+        print(f"Tamaño {n}: Burbuja = {tiempo_burbuja:.6f}s | Merge Sort = {tiempo_merge:.6f}s")
+
+    # =============================
+    # Gráfica con matplotlib
+    # =============================
+
+    tamanos_burbuja = [r["tamaño"] for r in resultados if r["algoritmo"] == "Burbuja"]
+    tiempos_burbuja = [r["tiempo_promedio_seg"] for r in resultados if r["algoritmo"] == "Burbuja"]
+
+    tamanos_merge = [r["tamaño"] for r in resultados if r["algoritmo"] == "Merge Sort"]
+    tiempos_merge = [r["tiempo_promedio_seg"] for r in resultados if r["algoritmo"] == "Merge Sort"]
+
+    plt.figure(figsize=(8, 6))
+    plt.plot(tamanos_burbuja, tiempos_burbuja, marker='o', label='Burbuja (O(n²))')
+    plt.plot(tamanos_merge, tiempos_merge, marker='s', label='Merge Sort (O(n log n))')
+
+    plt.title("Comparación de tiempos de ejecución: Burbuja vs Merge Sort")
+    plt.xlabel("Tamaño de la lista (n)")
+    plt.ylabel("Tiempo promedio (segundos)")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+
+    # Guardar figura
+    plt.savefig("tarea1_diaz_sergio.png")
+    plt.show()
+
+    return resultados
+
+
+if __name__ == "__main__":
+    main()
