@@ -2,9 +2,9 @@ import random
 import time
 import matplotlib.pyplot as plt
 
-# =============================
+
 # Algoritmos de ordenamiento
-# =============================
+
 
 def burbuja(lista):
     """Ordenamiento burbuja O(n²)"""
@@ -41,9 +41,8 @@ def merge(izquierda, derecha):
     return resultado
 
 
-# =============================
 # Función de medición
-# =============================
+
 
 def medir_tiempo(algoritmo, datos, repeticiones=3):
     """Mide el tiempo promedio de ejecución de un algoritmo sobre los datos."""
@@ -57,9 +56,8 @@ def medir_tiempo(algoritmo, datos, repeticiones=3):
     return total / repeticiones
 
 
-# =============================
 # Generación de datos y medición
-# =============================
+
 
 def main():
     random.seed(42)  # Semilla fija para reproducibilidad
@@ -77,9 +75,9 @@ def main():
 
         print(f"Tamaño {n}: Burbuja = {tiempo_burbuja:.6f}s | Merge Sort = {tiempo_merge:.6f}s")
 
-    # =============================
+
     # Gráfica con matplotlib
-    # =============================
+   
 
     tamanos_burbuja = [r["tamaño"] for r in resultados if r["algoritmo"] == "Burbuja"]
     tiempos_burbuja = [r["tiempo_promedio_seg"] for r in resultados if r["algoritmo"] == "Burbuja"]
