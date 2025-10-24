@@ -1,0 +1,188 @@
+ejercicio 1
+import math
+
+# Pedimos al usuario el número de términos n
+n = int(input("Ingrese el número de términos n: "))
+
+# Inicializamos la suma
+suma = 0.0
+
+# Bucle para sumar los términos de la serie armónica
+for i in range(1, n + 1):
+    suma += 1 / i
+
+# Constante de Euler–Mascheroni
+gamma = 0.5772
+
+# Comparación teórica
+aprox = math.log(n) + gamma
+
+# Mostramos resultados
+print(f"\nSerie armónica hasta n={n}: Hn = {suma:.6f}")
+print(f"Aproximación ln(n) + γ = {aprox:.6f}")
+print(f"Diferencia = {abs(suma - aprox):.6f}")
+
+
+
+
+
+
+
+ejercicio2
+import time
+
+# Función recursiva (ineficiente)
+def fibonacci_recursivo(n):
+    if n <= 1:
+        return n
+    return fibonacci_recursivo(n - 1) + fibonacci_recursivo(n - 2)
+
+# Función iterativa (eficiente)
+def fibonacci_iterativo(n):
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a
+
+# Número a calcular
+n = 35
+
+# Medición recursiva
+inicio = time.perf_counter()
+rec = fibonacci_recursivo(n)
+fin = time.perf_counter()
+t_rec = fin - inicio
+
+# Medición iterativa
+inicio = time.perf_counter()
+it = fibonacci_iterativo(n)
+fin = time.perf_counter()
+t_it = fin - inicio
+
+# Resultados
+print(f"Fibonacci({n}) recursivo = {rec} en {t_rec:.6f} s")
+print(f"Fibonacci({n}) iterativo = {it} en {t_it:.6f} s")
+
+
+
+
+
+
+
+
+
+
+
+
+
+ejercicio 3
+
+import random
+import statistics as stats
+
+# Generar lista de n números aleatorios
+n = int(input("Ingrese la cantidad de números: "))
+lista = [random.randint(1, 100) for _ in range(n)]
+
+print("\nLista original:")
+print(lista)
+
+# Ordenar la lista
+lista.sort()
+print("\nLista ordenada:")
+print(lista)
+
+# Calcular medidas estadísticas
+media = stats.mean(lista)
+mediana = stats.median(lista)
+try:
+    moda = stats.mode(lista)
+except stats.StatisticsError:
+    moda = "No hay una moda única"
+
+desv_std = stats.pstdev(lista)
+
+# Mostrar resultados
+print(f"\nPromedio: {media:.2f}")
+print(f"Mediana: {mediana}")
+print(f"Moda: {moda}")
+print(f"Desviación estándar: {desv_std:.2f}")
+
+
+
+
+
+
+
+
+
+ejercicio 4 
+import math
+
+puntos = [(1, 2), (4, 6), (7, 1), (10, 5)]
+
+# usar max() con una lambda para encontrar el par con mayor distancia
+par_max = max(
+    ((p1, p2) for i, p1 in enumerate(puntos) for p2 in puntos[i+1:]),
+    key=lambda par: math.dist(par[0], par[1])
+)
+
+print("Puntos más lejanos:", par_max, "con distancia =", round(math.dist(*par_max), 2))
+
+
+
+ejercicio 5 
+
+# Diccionario de polinomios con sus coeficientes
+# Nota: el índice es el exponente, posición 0 = coef. x^0, 1 = coef. x^1, etc.
+polinomios = {
+    "P1": [2, -3, 5],  # 2x^2 - 3x + 5
+    "P2": [1, 0, -4]   # x^2 - 4
+}
+
+def evaluar_polinomio(coefs, x):
+    #Evalúa un polinomio dado un valor de x.
+    return sum(coefs[i] * (x**i) for i in range(len(coefs)))
+
+def sumar_polinomios(p1, p2):
+    #Suma dos polinomios representados como listas de coeficientes.
+    n = max(len(p1), len(p2))
+    res = [0]*n
+    for i in range(n):
+        c1 = p1[i] if i < len(p1) else 0
+        c2 = p2[i] if i < len(p2) else 0
+        res[i] = c1 + c2
+    return res
+
+if _name_ == "_main_":
+    print("Evaluar P1 en x=2:", evaluar_polinomio(polinomios["P1"], 2))
+    print("Evaluar P2 en x=2:", evaluar_polinomio(polinomios["P2"], 2))
+
+    suma = sumar_polinomios(polinomios["P1"], polinomios["P2"])
+    print("Suma P1 + P2 =", suma)
+
+Ejercicio 6
+
+
+# Conjuntos A y B
+A = {x for x in range(1, 50) if x % 3 == 0}
+B = {x for x in range(1, 50) if x % 5 == 0}
+
+if _name_ == "_main_":
+    interseccion = A & B
+    union = A | B
+    dif_sim = A ^ B
+
+    print("A =", A)
+    print("B =", B)
+    print("Intersección A∩B =", interseccion)
+    print("Unión A∪B =", union)
+    print("Diferencia simétrica AΔB =", dif_sim)
+
+    # qué fracción de los números entre 1 y 50 pertenecen a cada conjunto
+    universo = set(range(1, 51))
+    frac_A = len(A) / len(universo)
+    frac_B = len(B) / len(universo)
+
+    print(f"Fracción en A: {frac_A:.2f}")
+    print(f"Fracción en B: {frac_B:.2f}")
